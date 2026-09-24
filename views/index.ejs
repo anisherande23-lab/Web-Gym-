@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cosarc - Cinematic Fitness & Discipline Portal</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="navbar">
+      <div class="brand">
+        <div class="brand-icon">⚔️</div>
+        <div>
+          <h1>COSARC</h1>
+          <p class="subtitle">Cinematic Fitness & Discipline Portal</p>
+        </div>
+      </div>
+      <div class="nav-actions">
+        <a href="/api/contracts" target="_blank" class="btn btn-outline">⚡ API JSON</a>
+        <a href="/health" target="_blank" class="btn btn-outline">🏥 Health Status</a>
+        <span class="badge badge-devops">CCA 2 Submission</span>
+      </div>
+    </header>
+
+    <!-- Notifications -->
+    <% if (error) { %>
+      <div class="alert alert-danger">
+        <span>⚠️ Error: <%= error %></span>
+      </div>
+    <% } %>
+    <% if (success) { %>
+      <div class="alert alert-success">
+        <span>✅ <%= success %></span>
+      </div>
+    <% } %>
+
+    <!-- Dynamic Metrics Dashboard -->
+    <section class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon">📋</div>
+        <div class="stat-content">
+          <span class="stat-label">Total Contracts</span>
+          <h2 class="stat-value"><%= stats.total %></h2>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">🎯</div>
+        <div class="stat-content">
+          <span class="stat-label">Completion Rate</span>
+          <h2 class="stat-value"><%= stats.completionRate %>%</h2>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">⭐</div>
+        <div class="stat-content">
+          <span class="stat-label">Avg Discipline Score</span>
+          <h2 class="stat-value"><%= stats.avgRating %> / 5</h2>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">🔖</div>
+        <div class="stat-content">
+          <span class="stat-label">Active Build Commit</span>
+          <h2 class="stat-value code-font"><%= commit %></h2>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Content Layout -->
+    <main class="main-layout">
+      <!-- Section 1: Form to Add Data -->
+      <section class="card form-card">
+        <div class="card-header">
+          <h3>➕ Log New Discipline Contract</h3>
+          <p>Server-validated input form with instant dynamic storage</p>
+        </div>
+        <form action="/contracts" method="POST" class="contract-form">
+          <div class="form-group">
+            <label for="title">Contract Title *</label>
+            <input type="text" id="title" name="title" placeholder="e.g. 5K Sunrise Run" required>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="category">Category *</label>
+              <select id="category" name="category" required>
+                <option value="Workout">🏋️ Workout</option>
+                <option value="Fuel">🥗 Fuel / Nutrition</option>
+                <option value="Hydration">💧 Hydration</option>
+                <option value="Mindset">🧘 Mindset & Recovery</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="status">Initial Status</label>
+              <select id="status" name="status">
+                <option value="Completed">✅ Completed</option>
+                <option value="In Progress" selected>⏳ In Progress</option>
+                <option value="Pending">📌 Pending</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="target">Target / Metric *</label>
+            <input type="text" id="target" name="target" placeholder="e.g. 10,000 steps or 2,500 kcal" required>
+          </div>
+
+          <div class="form-group">
+            <label for="rating">Discipline Rating (1-5)</label>
+            <div class="rating-input">
+              <input type="range" id="rating" name="rating" min="1" max="5" value="5" oninput="document.getElementById('ratingVal').innerText = this.value">
+              <span class="rating-badge"><span id="ratingVal">5</span> / 5 ⭐</span>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block">🚀 Commit Contract to Server</button>
+        </form>
+      </section>
+
+      <!-- Section 2: Display Data List -->
+      <section class="card list-card">
+        <div class="card-header flex-between">
+          <div>
+            <h3>🔥 Active Discipline Logs</h3>
+            <p>Dynamic server-rendered data feed</p>
+          </div>
+          <span class="badge badge-count"><%= contracts.length %> Entries</span>
+        </div>
+
+        <% if (contracts.length === 0) { %>
+          <div class="empty-state">
+            <p>No contracts logged yet. Submit your first discipline target above!</p>
+          </div>
+        <% } else { %>
+          <div class="contracts-list">
+            <% contracts.forEach(c => { %>
+              <div class="contract-item">
+                <div class="contract-main">
+                  <div class="contract-header">
+                    <span class="category-tag tag-<%= c.category.toLowerCase() %>"><%= c.category %></span>
+                    <span class="status-badge status-<%= c.status.toLowerCase().replace(' ', '-') %>"><%= c.status %></span>
+                  </div>
+                  <h4 class="contract-title"><%= c.title %></h4>
+                  <p class="contract-target">🎯 <strong>Target:</strong> <%= c.target %></p>
+                </div>
+                <div class="contract-meta">
+                  <div class="rating-stars">
+                    <% for(let i=0; i<c.rating; i++) { %>⭐<% } %>
+                  </div>
+                  <form action="/contracts/<%= c.id %>/delete" method="POST" class="inline-form">
+                    <button type="submit" class="btn-delete" title="Delete Contract" onclick="return confirm('Remove this discipline contract?')">🗑️</button>
+                  </form>
+                </div>
+              </div>
+            <% }); %>
+          </div>
+        <% } %>
+      </section>
+    </main>
+
+    <!-- Footer as required by PDF spec: commit <sha> -->
+    <footer class="app-footer">
+      <div class="footer-content">
+        <p><strong>Cosarc Dynamic Web Application</strong> | Cloud Computing & DevOps Assessment</p>
+        <div class="footer-commit">
+          commit <span class="commit-id"><%= commit %></span>
+        </div>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
