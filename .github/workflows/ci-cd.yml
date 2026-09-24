@@ -1,0 +1,62 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  # Stage 1: Quality Gates (Linting & Automated Testing)
+  test:
+    name: 🧪 Lint & Unit/Integration Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: 📦 Install Dependencies
+        run: npm ci
+
+      - name: 🔍 Run ESLint
+        run: npm run lint
+
+      - name: ⚡ Run Automated Tests
+        run: npm test
+
+  # Stage 2: Docker Build & Smoke Test
+  build:
+    name: 🐳 Docker Container Build & Smoke Test
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: 🛠️ Build Docker Image with Commit SHA
+        run: |
+          docker build --build-arg GIT_SHA=${{ github.sha }} -t cosarc-web .
+
+      - name: 🩺 Container Smoke Test (/health verification)
+        run: |
+          docker run -d -p 3000:3000 --name cosarc-app cosarc-web
+          sleep 5
+          curl -f http://localhost:3000/health
+          docker stop cosarc-app
+
+  # Stage 3: Continuous Deployment to Render (Push to main only)
+  deploy:
+    name: 🚀 Continuous Deployment (Render)
+    needs: build
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🌐 Trigger Render Deploy Webhook
+        run: |
+          curl -fsS -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}&ref=${{ github.sha }}"
