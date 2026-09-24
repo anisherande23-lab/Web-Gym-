@@ -1,0 +1,30 @@
+{
+  "name": "cosarc-web",
+  "version": "1.0.0",
+  "description": "Cosarc - Cinematic Fitness & Discipline Dynamic Web Application",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "keywords": [
+    "fitness",
+    "discipline",
+    "express",
+    "devops",
+    "cicd"
+  ],
+  "author": "MIT WPU Student",
+  "license": "MIT",
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.20.0",
+    "eslint": "^9.20.0",
+    "globals": "^15.15.0"
+  }
+}
