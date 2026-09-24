@@ -102,7 +102,7 @@ def build_pdf():
         [Paragraph("PRN", body_style), Paragraph("[Your PRN]", body_style)],
         [Paragraph("Roll No. / Panel", body_style), Paragraph("[Your Roll No / Panel]", body_style)],
         [Paragraph("Project Title", body_style), Paragraph("Cosarc - Cinematic Fitness & Discipline Portal", body_style)],
-        [Paragraph("GitHub Repository URL", body_style), Paragraph("https://github.com/[your-username]/cosarc-web", body_style)],
+        [Paragraph("GitHub Repository URL", body_style), Paragraph("https://github.com/anisherande23-lab/Web-Gym-", body_style)],
         [Paragraph("Live Application URL", body_style), Paragraph("https://cosarc-web.onrender.com", body_style)],
         [Paragraph("Date of Submission", body_style), Paragraph("September 24, 2026", body_style)],
         [Paragraph("Course Faculty", body_style), Paragraph("Pranati Waghodekar", body_style)]
@@ -229,9 +229,9 @@ def build_pdf():
 
     links_table = [
         [Paragraph("<b>Resource</b>", body_style), Paragraph("<b>Link / Path</b>", body_style)],
-        [Paragraph("GitHub Repository", body_style), Paragraph("https://github.com/[your-username]/cosarc-web", body_style)],
+        [Paragraph("GitHub Repository", body_style), Paragraph("https://github.com/anisherande23-lab/Web-Gym-", body_style)],
         [Paragraph("Live Render Application", body_style), Paragraph("https://cosarc-web.onrender.com", body_style)],
-        [Paragraph("GitHub Actions Pipeline", body_style), Paragraph("https://github.com/[your-username]/cosarc-web/actions", body_style)],
+        [Paragraph("GitHub Actions Pipeline", body_style), Paragraph("https://github.com/anisherande23-lab/Web-Gym-/actions", body_style)],
         [Paragraph("Workflow Configuration File", body_style), Paragraph("<code>.github/workflows/ci-cd.yml</code>", body_style)]
     ]
     t_links = Table(links_table, colWidths=[2.5*inch, 4.5*inch])

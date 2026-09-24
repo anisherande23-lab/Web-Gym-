@@ -13,7 +13,7 @@
 | **Project Title** | Cosarc - Cinematic Fitness & Discipline Portal |
 | **Technology Stack** | Node.js (v24), Express, EJS, ESLint, node:test, Docker, GitHub Actions, Render |
 | **CI/CD Pipeline** | Automated Linting $\rightarrow$ Unit/Integration Testing $\rightarrow$ Docker Build & Smoke Test $\rightarrow$ Render Webhook Deployment |
-| **GitHub Repository** | *[Insert your public GitHub repo URL]* |
+| **GitHub Repository** | https://github.com/anisherande23-lab/Web-Gym- |
 | **Live Web App URL** | *[Insert your Render Live application URL]* |
 
 ---
